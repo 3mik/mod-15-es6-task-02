@@ -1,0 +1,24 @@
+{
+  "name": "mod-15-es6-task-02",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.js",
+  "scripts": {
+    "start": "http-server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/3mik/mod-15-es6-task-02.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/3mik/mod-15-es6-task-02/issues"
+  },
+  "homepage": "https://github.com/3mik/mod-15-es6-task-02#readme",
+  "devDependencies": {
+    "http-server": "^0.11.1"
+  }
+}
