@@ -12,7 +12,7 @@ App = React.createClass({
         };
     },
 
-    getGif: function(searchingText, callback) {
+/*     getGif: function(searchingText, callback) {
         var url = GIPHY_API_URL + '/v1/gifs/random?api_key=' + GIPHY_PUB_KEY + '&tag=' + searchingText;
         var xhr = new XMLHttpRequest();
         xhr.open('GET', url);
@@ -27,19 +27,51 @@ App = React.createClass({
             }
         };
         xhr.send();
-    },    
+    },   */  
+
+    getGif: function(searchingText) {
+        return new Promise(
+            function(resolve, reject){
+                const url = GIPHY_API_URL + '/v1/gifs/random?api_key=' + GIPHY_PUB_KEY + '&tag=' + searchingText;
+                const xhr = new XMLHttpRequest();
+                xhr.onload = function() {
+                    if (this.status === 200) {                        
+                        let data = JSON.parse(this.responseText).data;
+                        let gif = {
+                            url: data.fixed_width_downsampled_url,
+                            sourceUrl: data.url
+                        };
+                        resolve(gif)
+                    } else {
+                        reject(new Error(this.statusText));
+                    }
+                };
+
+                xhr.onerror = function(){
+                    reject(new Error(
+                        `XMLHttpRequest Error: ${this.statusText}`))
+                };
+
+                xhr.open('GET', url);
+                xhr.send();
+            }
+        );
+    }, 
 
     handleSearch: function(searchingText) {
         this.setState({
-          loading: true
+            loading: true
         });
-        this.getGif(searchingText, function(gif) {
-          this.setState({
-            loading: false,
-            gif: gif,
-            searchingText: searchingText
-          });
-        }.bind(this));
+        this.getGif(searchingText)
+            .then(gif => {
+                this.setState({
+                    loading: false,
+                    gif: gif,
+                    searchingText: searchingText
+                });
+                })
+            .catch(error => console.log(error));  
+
     },
 
     render: function() {
